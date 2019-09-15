@@ -1,7 +1,7 @@
 // eslint-disable-next-line
 import React from 'react'
 // eslint-disable-next-line
-import { Image, TouchableNativeFeedback, View, Platform } from 'react-native'
+import { Image, TouchableNativeFeedback, View, Platform, TouchableOpacity, Text } from 'react-native'
 import PropTypes from 'prop-types'
 
 const CloseButton = props => {
@@ -10,20 +10,9 @@ const CloseButton = props => {
   if (props.image) closeImage = props.image
 
   return (
-    <View style={props.styles[0]}>
-      <TouchableNativeFeedback
-        background={
-          Platform.Version < 21
-            ? TouchableNativeFeedback.SelectableBackground()
-            : TouchableNativeFeedback.SelectableBackgroundBorderless()
-        }
-        onPress={props.onPress}
-      >
-        <View>
-          <Image source={closeImage} style={props.styles[1]} />
-        </View>
-      </TouchableNativeFeedback>
-    </View>
+    <TouchableOpacity onPress={props.onPress} style={[props.styles[0], { width: 60, marginLeft: 15 }]}>
+      <Text style={{ color: '#FFCD00', fontSize: 16 }}>Отмена</Text>
+    </TouchableOpacity>
   )
 }
 

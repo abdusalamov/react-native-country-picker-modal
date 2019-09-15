@@ -4,6 +4,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import SafeAreaView from 'react-native-safe-area-view'
+import Iconicon from 'react-native-vector-icons/Ionicons';
 
 import {
   StyleSheet,
@@ -15,7 +16,8 @@ import {
   TextInput,
   FlatList,
   ScrollView,
-  Platform
+  Platform,
+  Dimensions
 } from 'react-native'
 
 import Fuse from 'fuse.js'
@@ -55,6 +57,8 @@ setCountries()
 
 export const getAllCountries = () =>
   cca2List.map(cca2 => ({ ...countries[cca2], cca2 }))
+
+let deviceWidth = Dimensions.get('window').width
 
 export default class CountryPicker extends Component {
   static propTypes = {
@@ -378,16 +382,35 @@ componentDidUpdate (prevProps) {
     return renderFilter ? (
       renderFilter({ value, onChange, onClose })
     ) : (
-      <TextInput
-        testID="text-input-country-filter"
-        autoFocus={autoFocusFilter}
-        autoCorrect={false}
-        placeholder={filterPlaceholder}
-        placeholderTextColor={filterPlaceholderTextColor}
-        style={[styles.input, !this.props.closeable && styles.inputOnly]}
-        onChangeText={onChange}
-        value={value}
-      />
+      <View style={{
+        backgroundColor: '#E0E0E2',
+        borderRadius: 8,
+        paddingLeft: 10,
+        flex: 1,
+        marginLeft: 15,
+        maxWidth: deviceWidth * 0.67,
+        height: 40,
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignContent: 'center'
+
+      }}>
+        <Iconicon
+          name="ios-search"
+          color="#999"
+          size={18}
+        />
+        <TextInput
+          testID="text-input-country-filter"
+          autoFocus={autoFocusFilter}
+          autoCorrect={false}
+          placeholder={filterPlaceholder}
+          placeholderTextColor={filterPlaceholderTextColor}
+          style={[styles.input, !this.props.closeable && styles.inputOnly, { height: 40, marginLeft: 10 }]}
+          onChangeText={onChange}
+          value={value}
+        />
+      </View>
     )
   }
 
@@ -425,6 +448,7 @@ componentDidUpdate (prevProps) {
         >
           <SafeAreaView style={styles.modalContainer}>
             <View style={styles.header}>
+              {this.props.filterable && this.renderFilter()}
               {this.props.closeable && (
                 <CloseButton
                   image={this.props.closeButtonImage}
@@ -432,7 +456,6 @@ componentDidUpdate (prevProps) {
                   onPress={() => this.onClose()}
                 />
               )}
-              {this.props.filterable && this.renderFilter()}
             </View>
             <KeyboardAvoidingView behavior="padding">
               <View style={styles.contentContainer}>
